@@ -21,24 +21,26 @@ const LoginRightPanel = () => {
           {t('title')}
         </Title>
         <Text className={classNames(styles.pink, styles.loginDescription)}>
-          {t('description')}
+          {/*{t('description')}*/}
         </Text>
-        <Flex align="center" gap={16}>
-          <Avatars></Avatars>
-          <Flex vertical>
-            <Space>
-              <Rate disabled defaultValue={5} />
-              <span
-                className={classNames(styles.white, styles.loginRateNumber)}
-              >
-                5.0
-              </span>
-            </Space>
-            <span className={classNames(styles.pink, styles.loginRateReviews)}>
-              {t('review')}
-            </span>
-          </Flex>
-        </Flex>
+        {/*<Flex align="center" gap={16}>*/}
+        {/*  <Avatars></Avatars>*/}
+        {/*  */}
+        {/*  <Flex vertical>*/}
+        {/*    <Space>*/}
+        {/*      <Rate disabled defaultValue={5} />*/}
+        {/*      <span*/}
+        {/*        className={classNames(styles.white, styles.loginRateNumber)}*/}
+        {/*      >*/}
+        {/*        5.0*/}
+        {/*      </span>*/}
+        {/*    </Space>*/}
+        {/*    <span className={classNames(styles.pink, styles.loginRateReviews)}>*/}
+        {/*      {t('review')}*/}
+        {/*    </span>*/}
+        {/*  </Flex>*/}
+        {/*</Flex>*/}
+
       </Flex>
     </section>
   );
