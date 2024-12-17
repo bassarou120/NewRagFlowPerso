@@ -31,6 +31,8 @@ const ApiContent = ({
       <Flex vertical gap={'middle'}>
         <BackendServiceApi show={showApiKeyModal}></BackendServiceApi>
         {!hideChatPreviewCard && (
+
+
           <Card title={`${name} Web App`}>
             <Flex gap={8} vertical>
               <Space size={'middle'}>
@@ -41,6 +43,8 @@ const ApiContent = ({
               </Space>
             </Flex>
           </Card>
+
+
         )}
         <MarkdownPreview source={apiDoc}></MarkdownPreview>
       </Flex>
