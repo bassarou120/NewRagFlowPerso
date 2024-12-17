@@ -4,6 +4,7 @@ import { Modal, Typography } from 'antd';
 
 import { useParams } from 'umi';
 import styles from './index.less';
+import QRCode from 'qrcode.react'; // Import QRCode library
 
 const { Paragraph, Link } = Typography;
 
