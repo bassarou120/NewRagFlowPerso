@@ -118,6 +118,7 @@ const FormDrawer = ({
               name={operatorName}
               color={operatorMap[operatorName]?.color}
             ></OperatorIcon>
+
             <Flex align="center" gap={'small'} flex={1}>
               <label htmlFor="" className={styles.title}>
                 {t('title')}

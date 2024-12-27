@@ -7,6 +7,11 @@ import { Card, Modal, Tabs, TabsProps, Typography } from 'antd';
 
 import styles from './index.less';
 
+import { shortenUrl } from '@/services/shortener';
+
+import { useEffect, useState } from 'react';
+import QRCode from 'react-qr-code';
+
 const { Paragraph, Link } = Typography;
 
 const EmbedModal = ({
@@ -35,6 +40,25 @@ const EmbedModal = ({
 ~~~
   `;
 
+  const qrData = `${location.origin}/chat/share?shared_id=${token}&from=${form}&auth=${beta}`; // URL pour le QR code
+  // const resultShotqrData =  shortenUrl(qrData);
+
+  const [shortenedQrData, setShortenedQrData] = useState('---');
+
+  useEffect(() => {
+    const fetchShortenedUrl = async () => {
+      try {
+        const result = await shortenUrl(
+          `${location.origin}/chat/share?shared_id=${token}&from=${form}&auth=${beta}`,
+        );
+        setShortenedQrData(result);
+      } catch (error) {
+        console.error('Error shortening the URL:', error);
+      }
+    };
+    fetchShortenedUrl();
+  }, [qrData]);
+
   const items: TabsProps['items'] = [
     {
       key: '1',
@@ -51,11 +75,36 @@ const EmbedModal = ({
     },
     {
       key: '2',
+      label: t('qrCodeTitle'), // Nouveau titre pour le QR code
+      children: (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          {/*<QRCode value={qrData} size={200} />*/}
+
+          {/*<br/>*/}
+
+          {/*<QRCode value={resultShotqrData} size={200} />*/}
+
+          <h6>
+            {shortenedQrData && <QRCode value={shortenedQrData} size={200} />}
+          </h6>
+          <br />
+
+          <h6>{shortenedQrData} </h6>
+
+          {/*<Paragraph className={styles.qrInfo}>*/}
+          <Paragraph className={styles.qrInfo}>
+            {t('scanQrCode')} {/* Message pour guider l'utilisateur */}
+          </Paragraph>
+        </div>
+      ),
+    },
+    {
+      key: '3',
       label: t('partialTitle'),
       children: t('comingSoon'),
     },
     {
-      key: '3',
+      key: '4                ',
       label: t('extensionTitle'),
       children: t('comingSoon'),
     },
@@ -75,10 +124,12 @@ const EmbedModal = ({
       onCancel={hideModal}
     >
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+
       <div className="text-base font-medium mt-4 mb-1">
         {t(isAgent ? 'flow' : 'chat', { keyPrefix: 'header' })}
         <span className="ml-1 inline-block">ID</span>
       </div>
+
       <Paragraph copyable={{ text: token }} className={styles.id}>
         {token}
       </Paragraph>
