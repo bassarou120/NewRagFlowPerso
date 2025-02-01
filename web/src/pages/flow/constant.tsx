@@ -5,6 +5,7 @@ import {
   WikipediaIcon,
 } from '@/assets/icon/Icon';
 import { ReactComponent as AkShareIcon } from '@/assets/svg/akshare.svg';
+import { ReactComponent as PersoTemplateIcon } from '@/assets/svg/api.svg';
 import { ReactComponent as ArXivIcon } from '@/assets/svg/arxiv.svg';
 import { ReactComponent as baiduFanyiIcon } from '@/assets/svg/baidu-fanyi.svg';
 import { ReactComponent as BaiduIcon } from '@/assets/svg/baidu.svg';
@@ -92,6 +93,8 @@ export enum Operator {
   Crawler = 'Crawler',
   Invoke = 'Invoke',
   Template = 'Template',
+  Mytemplate = 'Mytemplate',
+  PersoTemplate = 'PersoTemplate',
   Email = 'Email',
 }
 
@@ -133,6 +136,8 @@ export const operatorIconMap = {
   [Operator.Crawler]: CrawlerIcon,
   [Operator.Invoke]: InvokeIcon,
   [Operator.Template]: TemplateIcon,
+  [Operator.PersoTemplate]: PersoTemplateIcon,
+  [Operator.Mytemplate]: PersoTemplateIcon,
   [Operator.Email]: EmailIcon,
 };
 
@@ -269,6 +274,12 @@ export const operatorMap: Record<
   [Operator.Template]: {
     backgroundColor: '#dee0e2',
   },
+  [Operator.PersoTemplate]: {
+    backgroundColor: '#dee0e2',
+  },
+  [Operator.Mytemplate]: {
+    backgroundColor: '#dee0e2',
+  },
   [Operator.Email]: { backgroundColor: '#e6f7ff' },
 };
 
@@ -305,6 +316,12 @@ export const componentMenuList = [
   },
   {
     name: Operator.Template,
+  },
+  {
+    name: Operator.PersoTemplate,
+  },
+  {
+    name: Operator.Mytemplate,
   },
   {
     name: Operator.Note,
@@ -686,6 +703,8 @@ export const RestrictedUpstreamMap = {
   [Operator.Note]: [],
   [Operator.Invoke]: [Operator.Begin],
   [Operator.Template]: [Operator.Begin, Operator.Relevant],
+  [Operator.PersoTemplate]: [Operator.Begin, Operator.Relevant],
+  [Operator.Mytemplate]: [Operator.Begin, Operator.Relevant],
   [Operator.Email]: [Operator.Begin],
 };
 
@@ -723,6 +742,8 @@ export const NodeMap = {
   [Operator.Crawler]: 'ragNode',
   [Operator.Invoke]: 'invokeNode',
   [Operator.Template]: 'templateNode',
+  [Operator.PersoTemplate]: 'persoTemplateNode',
+  [Operator.Mytemplate]: 'mytemplateNode',
   [Operator.Email]: 'emailNode',
 };
 

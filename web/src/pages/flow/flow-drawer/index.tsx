@@ -37,6 +37,7 @@ import YahooFinanceForm from '../form/yahoo-finance-form';
 import { useHandleFormValuesChange, useHandleNodeNameChange } from '../hooks';
 import OperatorIcon from '../operator-icon';
 
+import PersoTemplateForm from '@/pages/flow/form/perso-template-form';
 import { CloseOutlined } from '@ant-design/icons';
 import { lowerFirst } from 'lodash';
 import EmailForm from '../form/email-form';
@@ -82,6 +83,8 @@ const FormMap = {
   [Operator.Concentrator]: () => <></>,
   [Operator.Note]: () => <></>,
   [Operator.Template]: TemplateForm,
+  [Operator.Mytemplate]: TemplateForm,
+  [Operator.PersoTemplate]: PersoTemplateForm,
   [Operator.Email]: EmailForm,
 };
 

@@ -110,6 +110,30 @@ export const useSendNextMessage = () => {
     });
   }, [addNewestQuestion, handleSendMessage, done, setValue, value]);
 
+  const handlePressEnterVal = useCallback(
+    (customValue = null) => {
+      const inputValue = trim(customValue || value); // Priorité à customValue, sinon utiliser value
+      if (inputValue === '') return;
+
+      const id = uuid();
+      if (done) {
+        setValue(''); // Réinitialiser la valeur uniquement si elle provient de l'état
+        handleSendMessage({
+          id,
+          content: inputValue.trim(),
+          role: MessageType.User,
+        });
+      }
+
+      addNewestQuestion({
+        content: inputValue,
+        id,
+        role: MessageType.User,
+      });
+    },
+    [addNewestQuestion, handleSendMessage, done, setValue, value],
+  );
+
   const fetchPrologue = useCallback(async () => {
     // fetch prologue
     const sendRet = await send({ id: flowId });
@@ -126,6 +150,7 @@ export const useSendNextMessage = () => {
 
   return {
     handlePressEnter,
+    handlePressEnterVal,
     handleInputChange,
     value,
     sendLoading: !done,
@@ -136,3 +161,153 @@ export const useSendNextMessage = () => {
     removeMessageById,
   };
 };
+
+// export const useSelectNextMessages2 = () => {
+//   const { data: flowDetail, loading } = useFetchFlow();
+//   // const reference = flowDetail.dsl.reference;
+//   const {
+//     derivedMessages,
+//     ref,
+//     addNewestQuestion,
+//     addNewestAnswer,
+//     removeLatestMessage,
+//     removeMessageById,
+//     removeMessagesAfterCurrentMessage,
+//   } = useSelectDerivedMessages();
+//
+//   return {
+//
+//     loading,
+//     derivedMessages,
+//     ref,
+//     addNewestQuestion,
+//     addNewestAnswer,
+//     removeLatestMessage,
+//     removeMessageById,
+//     removeMessagesAfterCurrentMessage,
+//   };
+// };
+//
+// export const useSendNextMessage2 = () => {
+//   const {
+//
+//     loading,
+//     derivedMessages,
+//     ref,
+//     addNewestQuestion,
+//     addNewestAnswer,
+//     removeLatestMessage,
+//     removeMessageById,
+//   } = useSelectNextMessages2();
+//   const { id: flowId } = useParams();
+//   const { handleInputChange, value, setValue } = useHandleMessageInputChange();
+//   const { refetch } = useFetchFlow();
+//
+//   const { send, answer, done } = useSendMessageWithSse(api.runCanvas);
+//
+//   const sendMessage = useCallback(
+//     async ({ message }: { message: Message; messages?: Message[] }) => {
+//       const params: Record<string, unknown> = {
+//         id: flowId,
+//       };
+//       if (message.content) {
+//         params.message = message.content;
+//         params.message_id = message.id;
+//       }
+//       const res = await send(params);
+//
+//       if (receiveMessageError(res)) {
+//         antMessage.error(res?.data?.message);
+//
+//         // cancel loading
+//         setValue(message.content);
+//         removeLatestMessage();
+//       } else {
+//         refetch(); // pull the message list after sending the message successfully
+//       }
+//     },
+//     [flowId, send, setValue, removeLatestMessage, refetch],
+//   );
+//
+//   const handleSendMessage = useCallback(
+//     async (message: Message) => {
+//
+//
+//       sendMessage({ message });
+//     },
+//     [sendMessage],
+//   );
+//
+//   useEffect(() => {
+//     if (answer.answer) {
+//       addNewestAnswer(answer);
+//     }
+//   }, [answer, addNewestAnswer]);
+//
+//   const handlePressEnter = useCallback(() => {
+//     if (trim(value) === '') return;
+//     const id = uuid();
+//     if (done) {
+//       setValue('');
+//       handleSendMessage({ id, content: value.trim(), role: MessageType.User });
+//     }
+//     addNewestQuestion({
+//       content: value,
+//       id,
+//       role: MessageType.User,
+//     });
+//   }, [addNewestQuestion, handleSendMessage, done, setValue, value]);
+//
+//   const handlePressEnterVal = useCallback(
+//   (customValue = null) => {
+//     const inputValue = trim(customValue || value); // Priorité à customValue, sinon utiliser value
+//     if (inputValue === '') return;
+//
+//
+//
+//
+//     const id = uuid();
+//     if (done) {
+//
+//
+//       setValue(''); // Réinitialiser la valeur uniquement si elle provient de l'état
+//       handleSendMessage({
+//         id,
+//         content: inputValue.trim(),
+//         role: MessageType.User,
+//       });
+//     }
+//
+//     addNewestQuestion({
+//       content: inputValue,
+//       id,
+//       role: MessageType.User,
+//     });
+//   },
+//   [addNewestQuestion, handleSendMessage, done, setValue, value]
+// );
+//
+//   const fetchPrologue = useCallback(async () => {
+//     // fetch prologue
+//     const sendRet = await send({ id: flowId });
+//     if (receiveMessageError(sendRet)) {
+//       message.error(sendRet?.data?.message);
+//     } else {
+//       refetch();
+//     }
+//   }, [flowId, refetch, send]);
+//
+//   useEffect(() => {
+//     fetchPrologue();
+//   }, [fetchPrologue]);
+//
+//   return {
+//     handlePressEnter,
+//     handlePressEnterVal,
+//     handleInputChange,
+//     value,
+//     derivedMessages,
+//     ref,
+//     removeMessageById,
+//   };
+// };

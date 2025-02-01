@@ -498,6 +498,7 @@ export const useSaveGraphBeforeOpeningDebugDrawer = (show: () => void) => {
       if (saveRet?.code === 0) {
         // Call the reset api before opening the run drawer each time
         const resetRet = await resetFlow();
+
         // After resetting, all previous messages will be cleared.
         if (resetRet?.code === 0) {
           show();

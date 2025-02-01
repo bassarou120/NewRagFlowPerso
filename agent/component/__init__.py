@@ -31,13 +31,19 @@ from .akshare import AkShare, AkShareParam
 from .crawler import Crawler, CrawlerParam
 from .invoke import Invoke, InvokeParam
 from .template import Template, TemplateParam
+
+from .mytemplate import Mytemplate, MytemplateParam
+from .persotemplate import PersoTemplate, PersoTemplateParam
 from .email import Email, EmailParam
 
 
 
 def component_class(class_name):
     m = importlib.import_module("agent.component")
+
     c = getattr(m, class_name)
+
+    print(f"Looking for component class: {class_name}")
     return c
 
 __all__ = [
@@ -105,6 +111,10 @@ __all__ = [
     "InvokeParam",
     "Template",
     "TemplateParam",
+    "Mytemplate",
+    "MytemplateParam",
+    "PersoTemplate",
+    "PersoTemplateParam",
     "Email",
     "EmailParam",
     "component_class"

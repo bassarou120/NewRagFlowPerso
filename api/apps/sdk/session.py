@@ -399,6 +399,8 @@ def chatbot_completions(dialog_id):
 def agent_bot_completions(agent_id):
     req = request.json
 
+
+
     token = request.headers.get('Authorization').split()
     if len(token) != 2:
         return get_error_data_result(message='Authorization is not valid!"')

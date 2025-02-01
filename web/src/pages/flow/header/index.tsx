@@ -24,6 +24,7 @@ interface IProps {
 
 const FlowHeader = ({ showChatDrawer, chatDrawerVisible }: IProps) => {
   const { saveGraph } = useSaveGraph();
+
   const { handleRun } = useSaveGraphBeforeOpeningDebugDrawer(showChatDrawer);
   const { data } = useFetchFlow();
   const { t } = useTranslate('flow');
@@ -40,6 +41,8 @@ const FlowHeader = ({ showChatDrawer, chatDrawerVisible }: IProps) => {
 
   const handleRunAgent = useCallback(() => {
     const query: BeginQuery[] = getBeginNodeDataQuery();
+
+    // alert(query.length);
     if (query.length > 0) {
       showChatDrawer();
     } else {

@@ -10,6 +10,7 @@ import { useSendNextMessage } from './hooks';
 import PdfDrawer from '@/components/pdf-drawer';
 import { useClickDrawer } from '@/components/pdf-drawer/hooks';
 import { useFetchUserInfo } from '@/hooks/user-setting-hooks';
+import { useEffect, useRef } from 'react';
 import styles from './index.less';
 
 const FlowChatBox = () => {
@@ -24,11 +25,71 @@ const FlowChatBox = () => {
     reference,
   } = useSendNextMessage();
 
+  console.info(derivedMessages);
+
   const { visible, hideModal, documentId, selectedChunk, clickDocumentButton } =
     useClickDrawer();
   useGetFileIcon();
   const { t } = useTranslate('chat');
   const { data: userInfo } = useFetchUserInfo();
+
+  const inputRef = useRef<any>(null); // Référence pour l'élément Input
+  const buttonRef = useRef<HTMLButtonElement>(null); // Référence pour le bouton d'envoi
+
+  const handleButtonClick = (param: string) => {
+    if (inputRef.current) {
+      // Accéder à l'élément input natif
+      const nativeInput = inputRef.current.input;
+
+      // Créer un événement `input`
+      const event = new Event('input', { bubbles: true });
+
+      // Utiliser la fonction `onInputChange` de React
+      handleInputChange({ target: { value: param } } as any);
+
+      // Déclencher `handlePressEnter` après un petit délai
+      setTimeout(() => {
+        buttonRef.current.click();
+        // handlePressEnter();
+      }, 300);
+    }
+  };
+
+  useEffect(() => {
+    const handleClick = (event: Event) => {
+      const button = event.target as HTMLElement;
+      const param = button.getAttribute('data-param');
+
+      if (param) {
+        handleButtonClick(param);
+      }
+    };
+
+    const observeButtons = () => {
+      const buttons = document.querySelectorAll('[data-param]');
+      buttons.forEach((button) => {
+        button.removeEventListener('click', handleClick); // Nettoyer au cas où
+        button.addEventListener('click', handleClick);
+      });
+    };
+
+    // Observer les changements dans le DOM
+    const observer = new MutationObserver(() => {
+      observeButtons();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Ajouter les événements initiaux
+    observeButtons();
+
+    return () => {
+      observer.disconnect(); // Arrêter l'observation
+      document.querySelectorAll('[data-param]').forEach((button) => {
+        button.removeEventListener('click', handleClick);
+      });
+    };
+  }, []);
 
   return (
     <>
@@ -66,12 +127,14 @@ const FlowChatBox = () => {
         <Input
           size="large"
           placeholder={t('sendPlaceholder')}
+          ref={inputRef} // Ajouter la référence à l'Input
           value={value}
           suffix={
             <Button
               type="primary"
               onClick={handlePressEnter}
               loading={sendLoading}
+              ref={buttonRef} // Ajouter la référence au bouton
             >
               {t('send')}
             </Button>

@@ -72,6 +72,31 @@ const MessageItem = ({
     regenerateMessage?.(item);
   }, [regenerateMessage, item]);
 
+  //
+  //  const sendMessage = useCallback(
+  //   async ({ message }: { message: Message; messages?: Message[] }) => {
+  //     const params: Record<string, unknown> = {
+  //       id: flowId,
+  //     };
+  //     if (message.content) {
+  //       params.message = message.content;
+  //       params.message_id = message.id;
+  //     }
+  //     const res = await send(params);
+  //
+  //     if (receiveMessageError(res)) {
+  //       antMessage.error(res?.data?.message);
+  //
+  //       // cancel loading
+  //       setValue(message.content);
+  //       removeLatestMessage();
+  //     } else {
+  //       refetch(); // pull the message list after sending the message successfully
+  //     }
+  //   },
+  //   [flowId, send, setValue, removeLatestMessage, refetch],
+  // );
+
   useEffect(() => {
     const ids = item?.doc_ids ?? [];
     if (ids.length) {
@@ -81,6 +106,42 @@ const MessageItem = ({
         setIds(documentIds);
       }
     }
+
+    //   const button = document.getElementById('executeScript');
+    // if (button) {
+    //   button.addEventListener('click', () => {
+    //
+    //     alert("ok");
+    //     handlePressEnterVal()
+    //     console.log('Script déclenché par l\'utilisateur');
+    //   });
+    // }
+
+    //
+    //   const buttons = document.querySelectorAll('[data-param]');
+    //   buttons.forEach((button) => {
+    //     button.addEventListener('click', (event) => {
+    //       const param = event.target.getAttribute('data-param');
+    //
+    //
+    //
+    //       // sendLoading:true;
+    //
+    //       alert(param)
+    //       console.log('Paramètre cliqué :', param);
+    //       // Traitez le paramètre ici
+    //     });
+    //   });
+    //
+    // // Nettoyez les gestionnaires d'événements pour éviter les fuites de mémoire
+    // return () => {
+    //   buttons.forEach((button) =>
+    //     button.removeEventListener('click', (event) => {
+    //       const param = event.target.getAttribute('data-param');
+    //       console.log('Paramètre cliqué :', param);
+    //     })
+    //   );
+    // };
   }, [item.doc_ids, setDocumentIds, setIds, documentThumbnails]);
 
   return (
@@ -132,6 +193,7 @@ const MessageItem = ({
 
               {/* <b>{isAssistant ? '' : nickname}</b> */}
             </Space>
+
             <div
               className={
                 isAssistant
@@ -141,6 +203,7 @@ const MessageItem = ({
                   : styles.messageUserText
               }
             >
+              {/*{item.content}*/}
               <MarkdownContent
                 loading={loading}
                 content={item.content}

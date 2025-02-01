@@ -5,6 +5,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useSetModalState } from '@/hooks/common-hooks';
+import { MytemplateNode } from '@/pages/flow/canvas/node/mytemplate-node';
+import { PersoTemplateNode } from '@/pages/flow/canvas/node/perso-template-node';
 import { FolderInput, FolderOutput } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 import ReactFlow, {
@@ -63,6 +65,8 @@ const nodeTypes = {
   keywordNode: KeywordNode,
   invokeNode: InvokeNode,
   templateNode: TemplateNode,
+  mytemplateNode: MytemplateNode,
+  persoTemplateNode: PersoTemplateNode,
   emailNode: EmailNode,
 };
 

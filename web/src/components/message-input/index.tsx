@@ -200,12 +200,108 @@ const MessageInput = ({
     conversationIdRef.current = conversationId;
   }, [conversationId, setFileList]);
 
+  // const buttons = document.querySelectorAll('[data-param]');
+  // buttons.forEach((button) => {
+  //   button.addEventListener('click', (event) => {
+  //     const param = event.target.getAttribute('data-param');
+  //
+  //     // sendLoading:true;
+  //
+  //     alert("bassarou");
+  //     console.log('Paramètre cliqué :', param);
+  //     // Traitez le paramètre ici
+  //   });
+  // });
+
+  const inputRef = useRef<any>(null); // Référence pour l'élément Input
+  const buttonRef = useRef<HTMLButtonElement>(null); // Référence pour le bouton d'envoi
+
+  const handleButtonClick = (param: string) => {
+    if (inputRef.current) {
+      // Accéder à l'élément input natif
+      const nativeInput = inputRef.current.input;
+
+      // Créer un événement `input`
+      const event = new Event('input', { bubbles: true });
+
+      // Utiliser la fonction `onInputChange` de React
+      onInputChange({ target: { value: param } } as any);
+
+      // Déclencher `handlePressEnter` après un petit délai
+      setTimeout(() => {
+        buttonRef.current.click();
+        // handlePressEnter();
+      }, 300);
+    }
+  };
+
+  // Ajouter les écouteurs d'événements aux boutons
+  // useEffect(() => {
+  //   const buttons = document.querySelectorAll('[data-param]');
+  //   buttons.forEach((button) => {
+  //     button.addEventListener('click', (event) => {
+  //       const param = event.target.getAttribute('data-param');
+  //
+  //      if (param) {
+  //        // alert(param);
+  //
+  //         handleButtonClick(param);
+  //       }
+  //     });
+  //   });
+  //
+  //   // Nettoyer les écouteurs d'événements lors du démontage du composant
+  //   return () => {
+  //     buttons.forEach((button) => {
+  //       button.removeEventListener('click', handleButtonClick);
+  //     });
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    const handleClick = (event: Event) => {
+      const button = event.target as HTMLElement;
+      const param = button.getAttribute('data-param');
+
+      if (param) {
+        handleButtonClick(param);
+      }
+    };
+
+    const observeButtons = () => {
+      const buttons = document.querySelectorAll('[data-param]');
+      buttons.forEach((button) => {
+        button.removeEventListener('click', handleClick); // Nettoyer au cas où
+        button.addEventListener('click', handleClick);
+      });
+    };
+
+    // Observer les changements dans le DOM
+    const observer = new MutationObserver(() => {
+      observeButtons();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Ajouter les événements initiaux
+    observeButtons();
+
+    return () => {
+      observer.disconnect(); // Arrêter l'observation
+      document.querySelectorAll('[data-param]').forEach((button) => {
+        button.removeEventListener('click', handleClick);
+      });
+    };
+  }, []);
+
   return (
     <Flex gap={20} vertical className={styles.messageInputWrapper}>
       <Input
         size="large"
         placeholder={t('sendPlaceholder')}
         value={value}
+        ref={inputRef} // Ajouter la référence à l'Input
+        // onChange={onInputChange} // Assurez-vous que cet événement est géré
         disabled={disabled}
         className={classNames({ [styles.inputWrapper]: fileList.length === 0 })}
         suffix={
@@ -233,6 +329,7 @@ const MessageInput = ({
               onClick={handlePressEnter}
               loading={sendLoading}
               disabled={sendDisabled || isUploadingFile}
+              ref={buttonRef} // Ajouter la référence au bouton
             >
               {t('send')}
             </Button>

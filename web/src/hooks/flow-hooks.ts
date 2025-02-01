@@ -90,6 +90,7 @@ export const useFetchFlow = (): {
   refetch: () => void;
 } => {
   const { id } = useParams();
+
   const {
     data,
     isFetching: loading,
